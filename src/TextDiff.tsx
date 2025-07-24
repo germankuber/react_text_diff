@@ -9,7 +9,7 @@ interface DiffSentence {
 function diffTexts(text1: string, text2: string): DiffSentence[] {
   const result: DiffSentence[] = [];
   
-  // Dividir el texto en segmentos preservando saltos de línea y oraciones
+  // Split text into segments preserving line breaks and sentences
   const segments2 = text2.split(/(\n|[.!?](?=\s|$))/);
   const segments1 = text1.split(/(\n|[.!?](?=\s|$))/);
   
@@ -21,9 +21,9 @@ function diffTexts(text1: string, text2: string): DiffSentence[] {
     const segment1 = segments1[i] || '';
     
     if (segment2 === '\n') {
-      // Es un salto de línea
+      // It's a line break
       if (sentence2.trim()) {
-        // Agregar la oración acumulada antes del salto de línea
+        // Add the accumulated sentence before the line break
         const isDifferent = sentence1.trim() !== sentence2.trim();
         result.push({
           text: sentence2,
@@ -32,18 +32,18 @@ function diffTexts(text1: string, text2: string): DiffSentence[] {
         sentence1 = '';
         sentence2 = '';
       }
-      // Agregar el salto de línea
+      // Add the line break
       result.push({
         text: '\n',
         isDifferent: false,
         isLineBreak: true
       });
     } else if (/[.!?]/.test(segment2)) {
-      // Es un signo de puntuación
+      // It's a punctuation mark
       sentence2 += segment2;
       sentence1 += segment1;
       
-      // Completar la oración
+      // Complete the sentence
       const isDifferent = sentence1.trim() !== sentence2.trim();
       result.push({
         text: sentence2,
@@ -52,13 +52,13 @@ function diffTexts(text1: string, text2: string): DiffSentence[] {
       sentence1 = '';
       sentence2 = '';
     } else {
-      // Es parte del texto
+      // It's part of the text
       sentence2 += segment2;
       sentence1 += segment1;
     }
   }
   
-  // Agregar cualquier texto restante
+  // Add any remaining text
   if (sentence2.trim()) {
     const isDifferent = sentence1.trim() !== sentence2.trim();
     result.push({
@@ -83,25 +83,25 @@ const TextDiff: React.FC = () => {
 
   return (
     <div style={{ padding: 20, maxWidth: 800, margin: 'auto' }}>
-      <h2>Comparar textos</h2>
+      <h2>Text Comparison Tool</h2>
       <textarea
         rows={10}
-        placeholder="Texto original"
+        placeholder="Original text"
         value={text1}
         onChange={(e) => setText1(e.target.value)}
         style={{ width: '100%', marginBottom: 10 }}
       />
       <textarea
         rows={10}
-        placeholder="Texto modificado"
+        placeholder="Modified text"
         value={text2}
         onChange={(e) => setText2(e.target.value)}
         style={{ width: '100%', marginBottom: 10 }}
       />
       <button onClick={handleCompare} style={{ marginBottom: 20 }}>
-        Comparar
+        Compare
       </button>
-      <h3>Texto con diferencias resaltadas:</h3>
+      <h3>Text with highlighted differences:</h3>
       <div
         style={{
           backgroundColor: '#f0f0f0',
@@ -113,7 +113,7 @@ const TextDiff: React.FC = () => {
         }}
       >
         {diffResult.length === 0 ? (
-          'No hay texto para comparar aún.'
+          'No text to compare yet.'
         ) : (
           diffResult.map((sentence, index) => {
             if (sentence.isLineBreak) {

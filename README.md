@@ -1,69 +1,129 @@
-# React + TypeScript + Vite
+# Text Diff Tool
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based text comparison tool that highlights differences between two texts at the sentence level.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📝 **Sentence-level comparison**: Compares texts sentence by sentence (split by periods, question marks, and exclamation marks)
+- 🎯 **Precise highlighting**: Only highlights the specific sentences that differ between the two texts
+- 📄 **Format preservation**: Maintains original line breaks and text structure
+- 🎨 **Visual feedback**: Different sentences are highlighted in yellow for easy identification
+- ⚡ **Real-time comparison**: Compare texts instantly with the click of a button
 
-## Expanding the ESLint configuration
+## How it Works
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Input**: Enter your original text in the first textarea
+2. **Input**: Enter your modified text in the second textarea  
+3. **Compare**: Click the "Compare" button to analyze differences
+4. **Review**: The tool displays the modified text with differences highlighted in yellow
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The tool splits text by sentence boundaries (`.`, `!`, `?`) and compares each sentence individually. Only sentences that differ between the original and modified text will be highlighted.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Example
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Original Text:**
+```
+Hello, how are you?
+I am testing something different. But I want to know if it works or not.
+What do you think?
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Modified Text:**
 ```
+Hello, how are you?
+I am testing something else. But I want to know if it works or not.
+What do you think?
+```
+
+**Result:** Only "I am testing something else." will be highlighted in yellow.
+
+## Technology Stack
+
+- **React** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (version 14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd diff-app
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## Project Structure
+
+```
+src/
+├── App.tsx          # Main application component
+├── TextDiff.tsx     # Text comparison component
+├── main.tsx         # Application entry point
+└── index.css        # Global styles
+```
+
+## Component API
+
+### TextDiff Component
+
+The main component that handles text comparison functionality.
+
+**State:**
+- `text1: string` - Original text input
+- `text2: string` - Modified text input  
+- `diffResult: DiffSentence[]` - Array of sentence objects with difference information
+
+**Types:**
+```typescript
+interface DiffSentence {
+  text: string;        // The sentence text
+  isDifferent: boolean; // Whether this sentence differs from the original
+  isLineBreak?: boolean; // Whether this represents a line break
+}
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Future Enhancements
+
+- [ ] Word-level highlighting within sentences
+- [ ] Export comparison results
+- [ ] Support for different file formats
+- [ ] Customizable highlighting colors
+- [ ] Side-by-side comparison view
+- [ ] Undo/redo functionality
